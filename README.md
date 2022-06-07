@@ -1,3 +1,12 @@
+# School Assignment
+
+## Feed the animals
+
+Create an app where you can feed animals fetched from an api using;
+React
+Typescript
+Scss
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
