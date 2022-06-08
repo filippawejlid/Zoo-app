@@ -10,4 +10,11 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+    /* color: #ac4949; */
+}
+
+*{
+  font-family: parisine-plus-std-gris, sans-serif;
+  font-weight: 400;
+box-sizing: border-box;
 }
