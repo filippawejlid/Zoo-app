@@ -1,25 +1,27 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { IAnimal } from "../../models/IAnimal";
+import { getAnimalList, saveAnimalList } from "../../services/StorageService";
 import { DisplayAnimals } from "./DisplayAnimals";
 
 export function Zoo() {
-  const [animals, setAnimals] = useState<IAnimal[]>([]);
+  const [animalsState, setAnimalsState] = useState<IAnimal[]>([]);
 
   useEffect(() => {
-    if (animals.length !== 0) return;
+    if (animalsState.length !== 0) return;
 
     axios
       .get<IAnimal[]>("https://animals.azurewebsites.net/api/animals")
       .then((response) => {
-        setAnimals(response.data);
+        saveAnimalList(response.data);
+        setAnimalsState(getAnimalList());
       });
   });
 
   return (
     <>
       <div className="animals">
-        <DisplayAnimals animals={animals}></DisplayAnimals>
+        <DisplayAnimals animals={animalsState}></DisplayAnimals>
       </div>
     </>
   );

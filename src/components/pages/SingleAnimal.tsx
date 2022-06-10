@@ -1,12 +1,36 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { defaultImage } from "../../helpers/helpers";
 import { IAnimal } from "../../models/IAnimal";
+import { feed, hungryAgain } from "../../redux/features/AnimalsSlice";
+import { add } from "../../redux/features/NotisSlice";
+import { IStateAnimals } from "../../redux/models/IStateAnimals";
+import { StyledImg, StyledImgContainer } from "../StyledComponents/Images";
+
+const AnimalContainer = styled.div``;
+
+const AnimalHeading = styled.h2``;
+
+const AnimalYear = styled.h3``;
+
+const AnimalDesc = styled.div``;
+
+const LastFed = styled.div``;
+
+const IsFed = styled.div``;
+
+const linkStyle = {
+  textDecoration: "none",
+  color: "grey",
+};
 
 export function SingleAnimal() {
   let params = useParams();
   let paramsId: string = params.id!;
+
+  const dispatch = useDispatch();
 
   const [animal, setAnimal] = useState<IAnimal>({
     id: 0,
@@ -21,44 +45,52 @@ export function SingleAnimal() {
     lastFed: "",
   });
 
+  const animals = useSelector((state: IStateAnimals) => state.animals.value);
+
   useEffect(() => {
-    axios
-      .get<IAnimal[]>("https://animals.azurewebsites.net/api/animals")
-      .then((response) => {
-        for (let i = 0; i < response.data.length; i++) {
-          const fetchedAnimal = response.data[i];
+    if (animal.name !== "") return;
 
-          if (fetchedAnimal.id === parseInt(paramsId)) {
-            setAnimal(fetchedAnimal);
-          }
-        }
-      });
-  }, []);
+    for (let i = 0; i < animals.length; i++) {
+      if (animals[i].id === parseInt(paramsId)) {
+        setAnimal(animals[i]);
+      }
+    }
+  });
 
-  const AnimalContainer = styled.div``;
-
-  const AnimalHeading = styled.h2``;
-  const AnimalYear = styled.h3``;
-
-  const ImgContainer = styled.div``;
-
-  const Img = styled.img``;
-
-  const AnimalDesc = styled.div``;
-
-  const linkStyle = {
-    textDecoration: "none",
-    color: "grey",
-  };
+  function feedAnimal() {
+    dispatch(feed(animal.id));
+    setAnimal(animal);
+    setTimeout(() => {
+      dispatch(hungryAgain(animal.id));
+    }, 10800000);
+    setTimeout(() => {
+      dispatch(add(animal));
+      console.log("heddddssj");
+    }, 14400000);
+  }
 
   return (
     <>
-      {console.log(animal)}
+      {console.log(animals)}
       <AnimalContainer key={animal.id}>
-        <ImgContainer>
-          <Img src={animal.imageUrl}></Img>
-        </ImgContainer>
+        <StyledImgContainer>
+          <StyledImg src={animal.imageUrl} onError={defaultImage}></StyledImg>
+        </StyledImgContainer>
         <AnimalHeading>{animal.name}</AnimalHeading>
+        <AnimalYear>{animal.yearOfBirth}</AnimalYear>
+        <hr />
+        {animal.isFed ? (
+          <p>{animal.name} är mätt</p>
+        ) : (
+          <button
+            onClick={() => {
+              feedAnimal();
+            }}
+          >
+            Mata mig
+          </button>
+        )}
+        <LastFed>Senaste utfodringen: {animal.lastFed}</LastFed>
         <hr />
         <AnimalDesc>{animal.longDescription}</AnimalDesc>
       </AnimalContainer>
