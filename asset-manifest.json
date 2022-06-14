@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/Zoo-app/react-gh-pages/static/css/main.90b8aeac.css",
+    "main.js": "/Zoo-app/react-gh-pages/static/js/main.8bc53b31.js",
+    "static/js/787.60690f35.chunk.js": "/Zoo-app/react-gh-pages/static/js/787.60690f35.chunk.js",
+    "static/media/illustration5.jpg": "/Zoo-app/react-gh-pages/static/media/illustration5.9897c53e35f7f4ea27cd.jpg",
+    "static/media/header.jpg": "/Zoo-app/react-gh-pages/static/media/header.a26a14b5b9069cfff3a9.jpg",
+    "index.html": "/Zoo-app/react-gh-pages/index.html",
+    "main.90b8aeac.css.map": "/Zoo-app/react-gh-pages/static/css/main.90b8aeac.css.map",
+    "main.8bc53b31.js.map": "/Zoo-app/react-gh-pages/static/js/main.8bc53b31.js.map",
+    "787.60690f35.chunk.js.map": "/Zoo-app/react-gh-pages/static/js/787.60690f35.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.90b8aeac.css",
+    "static/js/main.8bc53b31.js"
+  ]
+}
