@@ -1,20 +1,146 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
-    /* color: #ac4949; */
+  /* color: #f3b7379d; */
+  /* cursor: ; */
 }
 
-*{
+* {
   font-family: parisine-plus-std-gris, sans-serif;
   font-weight: 400;
-box-sizing: border-box;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+h1 {
+  font-family: "Montserrat", sans-serif;
+
+  /* font-family: 'Cormorant', serif;
+font-family: 'Cormorant Garamond', serif;
+font-family: 'Montserrat', sans-serif;
+font-family: 'Nanum Myeongjo', serif;
+font-family: 'Playfair Display', serif;
+font-family: 'Poiret One', cursive;
+font-family: 'Poppins', sans-serif; */
+}
+
+.card {
+  width: 300px;
+  height: 400px;
+  background-color: #000;
+  border-radius: 30px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  backface-visibility: hidden;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+    rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+}
+
+.card:hover {
+  transform: scale(0.9);
+}
+
+.card:hover .con-text {
+  height: fit-content;
+}
+
+.card:hover::after {
+  height: 280px;
+}
+
+.card:hover .con-text p {
+  margin-bottom: -50px;
+  opacity: 1;
+}
+
+.card:after {
+  width: 100%;
+  content: "";
+  left: 0px;
+  bottom: 0px;
+  height: 150px;
+  position: absolute;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1));
+  z-index: 20;
+  transition: all 0.25 ease;
+}
+
+.card .img-con {
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+  transition: all 0.25 ease;
+  background-position: center;
+}
+
+.card .img-con img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card .con-text {
+  height: 50px;
+  z-index: 30;
+  position: absolute;
+  bottom: 30px;
+  color: #fff;
+  padding: 20px;
+  padding-bottom: 30px;
+}
+
+.card .con-text h2 {
+  font-family: "Fascinate", cursive;
+  color: rgb(240, 240, 240);
+}
+
+.card .con-text p {
+  font-size: 0.8rem;
+  opacity: 0;
+  margin-bottom: -170px;
+  transition: all 0.25 ease;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-direction: column;
+}
+
+.card .con-text p button {
+  padding: 7px 17px;
+  border-radius: 12px;
+  background-color: #1babbc;
+  border: 2px solid #fff;
+  color: #fff;
+  margin-top: 10px;
+  margin-left: auto;
+  cursor: pointer;
+  transition: all 0.25 ease;
+  font-size: 0.75rem;
+  outline: none;
+}
+
+.card .con-text p button:hover {
+  opacity: 0.9;
+  transform: scale(1.1);
+}
+
+.animals {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-evenly;
 }

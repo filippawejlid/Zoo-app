@@ -1,25 +1,42 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 import { IStateNotis } from "../../redux/models/IStateNotis";
 import * as React from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import { Link } from "react-router-dom";
+import { AlertContext } from "../../contexts/AlertContext";
 
-const NotisContainer = styled.div``;
-
-const NotisText = styled.div``;
-
-const NotisIcon = styled.i``;
-
-const Exclamation = styled.i``;
-
-const AlertExclamation = styled(Exclamation)`
+const AlertExclamation = styled.i`
+  position: absolute;
   color: red;
+  bottom: 11px;
+  font-size: 1.1rem;
 `;
 
+const Alert = styled.i`
+  color: black;
+`;
+
+const StyledButton = styled(Button)`
+  color: black;
+`;
+
+const StyledMenuItem = styled(MenuItem)`
+  width: 380px;
+`;
+
+const LinkStyle = {
+  color: "black",
+  textDecoration: "none",
+  display: "flex",
+  padding: "20px",
+};
+
 export function Notification() {
+  let alerts = React.useContext(AlertContext);
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -29,29 +46,40 @@ export function Notification() {
     setAnchorEl(null);
   };
 
-  let alert = true;
   const notisList = useSelector((state: IStateNotis) => state.notis.value);
 
-  let NotisHtml = notisList.map((notis) => {
-    return (
-      <NotisContainer key={notis.id}>
-        <NotisText>{notis.name} har inte ätit på 4 timmar</NotisText>
-      </NotisContainer>
-    );
-  });
+  let NotisHtml = notisList
+    .slice(0)
+    .reverse()
+    .map((notis) => {
+      return (
+        <Link to={"/zoo/animal/" + notis.id} key={notis.id} style={LinkStyle}>
+          <StyledMenuItem onClick={handleClose}>
+            {notis.name} har inte ätit sen klockan {notis.timestamp}
+          </StyledMenuItem>
+        </Link>
+      );
+    });
 
   return (
     <>
-      <div>
-        <Button
+      <div onClick={alerts.noNewNotis}>
+        <StyledButton
           id="basic-button"
           aria-controls={open ? "basic-menu" : undefined}
           aria-haspopup="true"
           aria-expanded={open ? "true" : undefined}
           onClick={handleClick}
         >
-          Dashboard
-        </Button>
+          <Alert className="fa-solid fa-bell"></Alert>
+          {alerts.alert ? (
+            <p>
+              <AlertExclamation className="fa-solid fa-exclamation"></AlertExclamation>
+            </p>
+          ) : (
+            <p></p>
+          )}
+        </StyledButton>
         <Menu
           id="basic-menu"
           anchorEl={anchorEl}
@@ -61,19 +89,9 @@ export function Notification() {
             "aria-labelledby": "basic-button",
           }}
         >
-          <MenuItem onClick={handleClose}>Profile</MenuItem>
-          <MenuItem onClick={handleClose}>My account</MenuItem>
-          <MenuItem onClick={handleClose}>Logout</MenuItem>
+          {NotisHtml}
         </Menu>
       </div>
-
-      <NotisIcon className="fa-solid fa-bell" onClick={() => {}}></NotisIcon>
-      {alert ? (
-        <AlertExclamation className="fa-solid fa-exclamation"></AlertExclamation>
-      ) : (
-        <Exclamation className="fa-solid fa-exclamation"></Exclamation>
-      )}
-      {NotisHtml}
     </>
   );
 }

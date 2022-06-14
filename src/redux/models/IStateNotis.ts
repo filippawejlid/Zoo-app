@@ -1,4 +1,4 @@
-import { INotis } from "./../../models/INotis";
+import { INotis } from "../../models/INotis";
 export interface IStateNotis {
   notis: IValue;
 }
