@@ -128,8 +128,7 @@ export function SingleAnimal() {
     let animalMilliseconds = animalLastFed.getTime();
     let time = Date.now();
 
-    //10800000
-    if (time - animalMilliseconds >= 5000) {
+    if (time - animalMilliseconds >= 10800000) {
       dispatch(hungryAgain(animal.id));
       clearInterval(interval);
     }
@@ -140,8 +139,7 @@ export function SingleAnimal() {
     let animalMilliseconds = animalLastFed.getTime();
     let time = Date.now();
 
-    // 14400000
-    if (time - animalMilliseconds >= 5000) {
+    if (time - animalMilliseconds >= 14400000) {
       dispatch(add(animal));
       alerts.newNotis();
       clearInterval(interval);
