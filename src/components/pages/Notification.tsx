@@ -48,6 +48,10 @@ export function Notification() {
 
   const notisList = useSelector((state: IStateNotis) => state.notis.value);
 
+  let listIsSet: boolean = false;
+  if (notisList.length !== 0) {
+    listIsSet = true;
+  }
   let NotisHtml = notisList
     .slice(0)
     .reverse()
@@ -89,7 +93,13 @@ export function Notification() {
             "aria-labelledby": "basic-button",
           }}
         >
-          {NotisHtml}
+          {listIsSet ? (
+            NotisHtml
+          ) : (
+            <StyledMenuItem onClick={handleClose}>
+              Du har inga nya notiser...
+            </StyledMenuItem>
+          )}
         </Menu>
       </div>
     </>

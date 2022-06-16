@@ -4,7 +4,12 @@ import { getAnimalList } from "../../services/StorageService";
 import { IAnimal } from "../../models/IAnimal";
 import { IAction } from "../models/IAction";
 
-let animalsList: IAnimal[] = getAnimalList<IAnimal>();
+let animalsList: IAnimal[] = [];
+getAnimalList<IAnimal>().then((response) => {
+  animalsList = response;
+  console.log(response);
+  console.log(animalsList);
+});
 
 const animalsSlice = createSlice({
   name: "animals",
@@ -28,9 +33,12 @@ const animalsSlice = createSlice({
         saveAnimalList(state.value);
       });
     },
+    set: (state, action: IAction<IAnimal[]>) => {
+      state.value = action.payload;
+    },
   },
 });
 
-export const { feed, hungryAgain } = animalsSlice.actions;
+export const { feed, hungryAgain, set } = animalsSlice.actions;
 
 export default animalsSlice.reducer;

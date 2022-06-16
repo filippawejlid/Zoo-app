@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -92,6 +92,22 @@ const IsFed = styled(Button)`
 `;
 
 export function SingleAnimal() {
+  const animals = useSelector((state: IStateAnimals) => state.animals.value);
+  console.log(animals);
+
+  const [animal, setAnimal] = useState<IAnimal>({
+    id: 0,
+    name: "",
+    latinName: "",
+    yearOfBirth: 0,
+    shortDescription: "",
+    longDescription: "",
+    imageUrl: "",
+    medicine: "",
+    isFed: false,
+    lastFed: "",
+  });
+
   let alerts = React.useContext(AlertContext);
 
   let params = useParams();
@@ -99,26 +115,26 @@ export function SingleAnimal() {
 
   const dispatch = useDispatch();
 
-  const animals = useSelector((state: IStateAnimals) => state.animals.value);
-  let animal: IAnimal = getAnimal(parseInt(paramsId))!;
+  useEffect(() => {
+    console.log(animals);
 
-  function getAnimal(id: number) {
     for (let i = 0; i < animals.length; i++) {
       const element = animals[i];
 
-      if (element.id === id) {
-        return element;
+      if (element.id === +paramsId) {
+        setAnimal(element);
+        console.log("Animal", element);
       }
     }
-  }
+  }, [animals]);
 
   let interval: NodeJS.Timer;
 
   useEffect(() => {
+    console.log(animal.isFed);
     if (animal.isFed) {
       interval = setInterval(() => {
         checkTime();
-        sendAlert();
       }, 1000);
     }
   });
@@ -128,40 +144,39 @@ export function SingleAnimal() {
     let animalMilliseconds = animalLastFed.getTime();
     let time = Date.now();
 
-    if (time - animalMilliseconds >= 10800000) {
+    console.log(time - animalMilliseconds);
+    if (time - animalMilliseconds >= 3000) {
       dispatch(hungryAgain(animal.id));
-      clearInterval(interval);
     }
-  }
-
-  function sendAlert() {
-    let animalLastFed = new Date(animal.lastFed);
-    let animalMilliseconds = animalLastFed.getTime();
-    let time = Date.now();
-
-    if (time - animalMilliseconds >= 14400000) {
+    //14400000  10800000
+    if (time - animalMilliseconds >= 5000) {
+      dispatch(update(animal));
       dispatch(add(animal));
       alerts.newNotis();
       clearInterval(interval);
+      console.log("HDNDNJJDHNDNND");
     }
   }
 
   function feedAnimal() {
-    dispatch(feed(animal.id));
-    dispatch(update(animal));
+    if (animal) {
+      dispatch(feed(animal.id));
+      dispatch(update(animal));
+    }
   }
 
   return (
     <>
-      <AnimalContainer key={animal.id}>
+      {console.log(animals)}
+      <AnimalContainer key={animal?.id}>
         <AnimalHeading>
-          Hej jag heter <Name>{animal.name}</Name>
+          Hej jag heter <Name>{animal?.name}</Name>
         </AnimalHeading>
         <StyledImgContainer>
-          <StyledImg src={animal.imageUrl} onError={defaultImage}></StyledImg>
+          <StyledImg src={animal?.imageUrl} onError={defaultImage}></StyledImg>
         </StyledImgContainer>
-        {animal.isFed ? (
-          <IsFed disabled>{animal.name} är mätt</IsFed>
+        {animal?.isFed ? (
+          <IsFed disabled>{animal?.name} är mätt</IsFed>
         ) : (
           <Button
             onClick={() => {
@@ -179,8 +194,8 @@ export function SingleAnimal() {
             d="M0,288L48,272C96,256,192,224,288,197.3C384,171,480,149,576,165.3C672,181,768,235,864,250.7C960,267,1056,245,1152,250.7C1248,256,1344,288,1392,304L1440,320L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
           ></path>
         </svg>
-        <AnimalYear>Född {animal.yearOfBirth}</AnimalYear>
-        <AnimalDesc>{animal.longDescription}</AnimalDesc>
+        <AnimalYear>Född {animal?.yearOfBirth}</AnimalYear>
+        <AnimalDesc>{animal?.longDescription}</AnimalDesc>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
           <path
             fill="#1babbc"
