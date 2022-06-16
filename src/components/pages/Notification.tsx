@@ -27,6 +27,10 @@ const StyledMenuItem = styled(MenuItem)`
   width: 380px;
 `;
 
+const EmptyList = styled(StyledMenuItem)`
+  width: 220px;
+`;
+
 const LinkStyle = {
   color: "black",
   textDecoration: "none",
@@ -96,9 +100,9 @@ export function Notification() {
           {listIsSet ? (
             NotisHtml
           ) : (
-            <StyledMenuItem onClick={handleClose}>
+            <EmptyList onClick={handleClose}>
               Du har inga nya notiser...
-            </StyledMenuItem>
+            </EmptyList>
           )}
         </Menu>
       </div>

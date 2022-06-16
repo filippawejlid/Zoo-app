@@ -5,11 +5,10 @@ import { Home } from "./components/pages/Home";
 import { SingleAnimal } from "./components/pages/SingleAnimal";
 import { NotFound } from "./components/NotFound";
 import { Zoo } from "./components/pages/Zoo";
-import { Provider, useSelector } from "react-redux";
+import { Provider } from "react-redux";
 import Store from "./redux/Store";
 import { AlertContext, alerts } from "./contexts/AlertContext";
-import { useEffect, useState } from "react";
-import { IStateAnimals } from "./redux/models/IStateAnimals";
+import { useState } from "react";
 
 function App() {
   const [alert, setAlert] = useState(alerts.noNotis);

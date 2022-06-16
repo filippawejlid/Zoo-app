@@ -136,6 +136,7 @@ font-family: 'Poppins', sans-serif; */
 .card .con-text p button:hover {
   opacity: 0.9;
   transform: scale(1.1);
+  background-color: #e18b33;
 }
 
 .animals {

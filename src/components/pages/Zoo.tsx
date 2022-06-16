@@ -1,11 +1,7 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { IAnimal } from "../../models/IAnimal";
-import { set } from "../../redux/features/AnimalsSlice";
-import { IStateAnimals } from "../../redux/models/IStateAnimals";
-import { getAnimalList, saveAnimalList } from "../../services/StorageService";
+import { getAnimalList } from "../../services/StorageService";
 import { DisplayAnimals } from "./DisplayAnimals";
 
 const StyledHeading = styled.h2`
@@ -43,15 +39,13 @@ const Text = styled.div`
 `;
 
 export function Zoo() {
-  const animals = useSelector((state: IStateAnimals) => state.animals.value);
-  const dispatch = useDispatch();
+  const [animals, setAnimals] = useState<IAnimal[]>([]);
+
   useEffect(() => {
-    axios
-      .get<IAnimal[]>("https://animals.azurewebsites.net/api/animals")
-      .then((response) => {
-        dispatch(set(response.data));
-      });
-  }, []);
+    if (animals.length !== 0) return;
+    setAnimals(getAnimalList());
+    console.log("h");
+  });
 
   return (
     <>

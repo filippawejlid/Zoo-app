@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { AlertContext } from "../../contexts/AlertContext";
 import { defaultImage } from "../../helpers/helpers";
 import { IAnimal } from "../../models/IAnimal";
-import { feed, hungryAgain } from "../../redux/features/AnimalsSlice";
 import { add, update } from "../../redux/features/NotisSlice";
-import { IStateAnimals } from "../../redux/models/IStateAnimals";
+import { getAnimalList, saveAnimalList } from "../../services/StorageService";
 import { StyledImg, StyledImgContainer } from "../StyledComponents/Images";
 
 const AnimalContainer = styled.div`
@@ -92,9 +91,7 @@ const IsFed = styled(Button)`
 `;
 
 export function SingleAnimal() {
-  const animals = useSelector((state: IStateAnimals) => state.animals.value);
-  console.log(animals);
-
+  const animals: IAnimal[] = getAnimalList();
   const [animal, setAnimal] = useState<IAnimal>({
     id: 0,
     name: "",
@@ -113,25 +110,21 @@ export function SingleAnimal() {
   let params = useParams();
   let paramsId: string = params.id!;
 
-  const dispatch = useDispatch();
+  let dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(animals);
-
     for (let i = 0; i < animals.length; i++) {
       const element = animals[i];
 
       if (element.id === +paramsId) {
         setAnimal(element);
-        console.log("Animal", element);
       }
     }
-  }, [animals]);
+  }, [paramsId]);
 
   let interval: NodeJS.Timer;
 
   useEffect(() => {
-    console.log(animal.isFed);
     if (animal.isFed) {
       interval = setInterval(() => {
         checkTime();
@@ -144,30 +137,45 @@ export function SingleAnimal() {
     let animalMilliseconds = animalLastFed.getTime();
     let time = Date.now();
 
-    console.log(time - animalMilliseconds);
-    if (time - animalMilliseconds >= 3000) {
-      dispatch(hungryAgain(animal.id));
-    }
-    //14400000  10800000
     if (time - animalMilliseconds >= 5000) {
+      if (animal) {
+        for (let i = 0; i < animals.length; i++) {
+          const element = animals[i];
+
+          if (element.id === +paramsId) {
+            element.isFed = false;
+            setAnimal(element);
+            saveAnimalList(animals);
+          }
+        }
+      }
+    }
+    //10800000 14400000
+    if (time - animalMilliseconds >= 6000) {
       dispatch(update(animal));
       dispatch(add(animal));
       alerts.newNotis();
       clearInterval(interval);
-      console.log("HDNDNJJDHNDNND");
     }
   }
 
   function feedAnimal() {
     if (animal) {
-      dispatch(feed(animal.id));
+      animals.forEach((element) => {
+        if (element.id === +paramsId) {
+          const beenFed = Date.now();
+          element.lastFed = new Date(beenFed).toISOString();
+          element.isFed = true;
+          setAnimal(element);
+          saveAnimalList(animals);
+        }
+      });
       dispatch(update(animal));
     }
   }
 
   return (
     <>
-      {console.log(animals)}
       <AnimalContainer key={animal?.id}>
         <AnimalHeading>
           Hej jag heter <Name>{animal?.name}</Name>

@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import BgImg from "../../assets/illustration5.jpg";
 import { IAnimal } from "../../models/IAnimal";
-import { set } from "../../redux/features/AnimalsSlice";
 import { IStateAnimals } from "../../redux/models/IStateAnimals";
 
 const LandingPage = styled.div`
@@ -41,18 +40,6 @@ const linkStyle = {
   color: "white",
 };
 export function Home() {
-  const animals = useSelector((state: IStateAnimals) => state.animals.value);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    axios
-      .get<IAnimal[]>("https://animals.azurewebsites.net/api/animals")
-      .then((response) => {
-        dispatch(set(response.data));
-      });
-  }, []);
-
-  console.log("From state", animals);
-
   return (
     <>
       <LandingPage>

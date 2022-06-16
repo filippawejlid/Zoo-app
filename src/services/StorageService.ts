@@ -3,23 +3,17 @@ import axios from "axios";
 const LS_animal_KEY = "animals";
 const LS_notis_KEY = "notis";
 
-export const getAnimalList = async <T>(): Promise<T[]> => {
-  if (localStorage.getItem(LS_animal_KEY) === null || []) {
-    let response = await axios.get<T[]>(
-      "https://animals.azurewebsites.net/api/animals"
-    );
-    console.log(response.data);
-
-    saveAnimalList(response.data);
-    return response.data;
+export const getAnimalList = <T>(): T[] => {
+  if (localStorage.getItem(LS_animal_KEY) === null) {
+    axios
+      .get("https://animals.azurewebsites.net/api/animals")
+      .then((response) => {
+        saveAnimalList(response.data);
+      });
   }
 
   let lsList = localStorage.getItem(LS_animal_KEY) || "[]";
-  console.log(lsList);
-
-  return new Promise(() => {
-    return JSON.parse(lsList) as T[];
-  });
+  return JSON.parse(lsList) as T[];
 };
 
 export const saveAnimalList = <T>(updatedList: T): void => {
