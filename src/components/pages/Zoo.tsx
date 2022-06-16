@@ -44,7 +44,6 @@ export function Zoo() {
   useEffect(() => {
     if (animals.length !== 0) return;
     setAnimals(getAnimalList());
-    console.log("h");
   });
 
   return (

@@ -1,11 +1,6 @@
-import axios from "axios";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import BgImg from "../../assets/illustration5.jpg";
-import { IAnimal } from "../../models/IAnimal";
-import { IStateAnimals } from "../../redux/models/IStateAnimals";
 
 const LandingPage = styled.div`
   background-image: url(${BgImg});

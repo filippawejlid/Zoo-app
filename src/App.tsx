@@ -36,6 +36,7 @@ function App() {
                 ></Route>
                 <Route path="*" element={<NotFound />}></Route>
               </Route>
+              <Route path="*" element={<NotFound />}></Route>
             </Routes>
           </BrowserRouter>
         </Provider>

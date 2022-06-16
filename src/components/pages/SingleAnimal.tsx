@@ -137,7 +137,7 @@ export function SingleAnimal() {
     let animalMilliseconds = animalLastFed.getTime();
     let time = Date.now();
 
-    if (time - animalMilliseconds >= 5000) {
+    if (time - animalMilliseconds >= 10800000) {
       if (animal) {
         for (let i = 0; i < animals.length; i++) {
           const element = animals[i];
@@ -150,8 +150,8 @@ export function SingleAnimal() {
         }
       }
     }
-    //10800000 14400000
-    if (time - animalMilliseconds >= 6000) {
+
+    if (time - animalMilliseconds >= 14400000) {
       dispatch(update(animal));
       dispatch(add(animal));
       alerts.newNotis();
